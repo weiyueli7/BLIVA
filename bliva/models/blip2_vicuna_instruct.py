@@ -19,7 +19,7 @@ class Blip2VicunaInstruct(Blip2Base):
         - vicuna7b
         - vicuna13b
     Usage:
-        >>> from lavis.models import load_model
+        >>> from bliva.models import load_model
         >>> model = load_model("blip2_vicuna_instruct", "vicuna7b")
     """
 
@@ -65,13 +65,6 @@ class Blip2VicunaInstruct(Blip2Base):
             num_query_token, self.visual_encoder.num_features
         )
         
-        # #hack
-        # self.new_query_tokens = torch.zeros(1, 64, 768)
-        # print(self.new_query_tokens.shape, '\n')
-        # self.new_query_tokens[:, :32, :] = self.query_tokens.data
-        # self.new_query_tokens[:, 32:, :] = torch.randn(1, 32, 768) * 0.02
-        #                 #torch.zeros(1, 32, 768).normal_(mean=0.0, std=0.02) 
-        # self.new_query_tokens = nn.Parameter(self.new_query_tokens)
         
         if not qformer_text_input:
             self.Qformer.bert.embeddings.word_embeddings = None
@@ -731,12 +724,6 @@ class Blip2VicunaInstruct(Blip2Base):
             apply_lemmatizer=apply_lemmatizer,
             qformer_text_input=qformer_text_input,
         )
-
-        # if qformer_text_input:
-        #     # Hard-coded to load from BLIP-2 stage-1 pre-trained model (not ideal)
-        #     model.load_from_pretrained(
-        #         url_or_filename="https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained.pth"
-        #     )
 
         model.load_checkpoint_from_config(cfg) 
 
